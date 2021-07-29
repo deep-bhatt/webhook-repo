@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git Status</title>
+</head>
+<body>
+  A really simple list :)
+  <ul id="gitRequestlist">
+  </ul>
+</body>
+<script>
+function fetchRequests() {
+  fetch('http://127.0.0.1:5000/webhook/fetch')
+    .then(response => response.json())
+    .then(data => {
+      const ul = document.getElementById('gitRequestlist')
+      data.forEach(gitRequest => {
+        console.log(gitRequest);
+        const li = document.createElement('li');
+        // for PUSH
+        // "Travis" pushed to "staging" on 1st April 2021 - 9:30 PM UTC
+        let message = ''
+        if (gitRequest.action === 'PUSH') {
+          message = `"${gitRequest.author}" pushed to "${gitRequest.to_branch}" on ${gitRequest.timestamp}`;
+        } else if (gitRequest.action === 'PULL_REQUEST') {
+          // "Travis" submitted a pull request from "staging" to "master" on 1st April 2021 - 9:00 AM UTC
+          message = `"${gitRequest.author}" submitted a pull request from "${gitRequest.from_branch}" to "${gitRequest.to_branch}" on ${gitRequest.timestamp}`;
+        } else {
+          alert('not yet implemented');
+        }
+        li.appendChild(document.createTextNode(message));
+        ul.appendChild(li);
+      });
+    })
+}
+
+
+  window.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+    fetchRequests();
+    setInterval(() => {
+      document.getElementById('gitRequestlist').innerHTML = ''
+      fetchRequests();
+    }, 99999999); // make it 15 seconds later
+  });
+</script>
+</html>

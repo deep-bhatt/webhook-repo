@@ -1,8 +1,8 @@
-from flask import Blueprint, json, request
+from flask import Blueprint, json, request, render_template
 from dateutil import parser
 from ..extensions import mongo
 
-webhook = Blueprint("Webhook", __name__, url_prefix="/webhook")
+webhook = Blueprint("Webhook", __name__, url_prefix="/webhook", template_folder="templates")
 
 
 # im pretty sure there is an elegant way of doing this
@@ -43,12 +43,14 @@ def receiver():
 @webhook.route("/display", methods=["GET"])
 def display():
     # show html template
-    return f"TODO: show results here {1+6}", 200
+    return render_template('index.html')
 
 
 @webhook.route("/fetch", methods=["GET"])
 def fetch():
     # in json
-    results = list(mongo.db.requests.find())
-    print(results)
-    return f"TODO: return mongodb rows here <br> {results}", 200
+    results = list(mongo.db.requests.find({}, {"_id": 0}))
+    for r in results:
+        r["timestamp"] = r["timestamp"].strftime("%m/%d/%Y, %H:%M:%S %p %Z")
+        print(r)
+    return json.dumps(results)
