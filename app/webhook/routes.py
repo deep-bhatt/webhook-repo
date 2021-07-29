@@ -2,7 +2,9 @@ from flask import Blueprint, json, request, render_template
 from dateutil import parser
 from ..extensions import mongo
 
-webhook = Blueprint("Webhook", __name__, url_prefix="/webhook", template_folder="templates")
+webhook = Blueprint(
+    "Webhook", __name__, url_prefix="/webhook", template_folder="templates"
+)
 
 
 # im pretty sure there is an elegant way of doing this
@@ -36,14 +38,34 @@ def receiver_push():
 
 @webhook.route("/receiver/pull_request", methods=["POST"])
 def receiver():
-    # save to mongodb
-    return {"type": "pull_request"}, 200
+    _json = request.json
+    request_id = _json["pull_request"]["id"]
+    author = _json["pull_request"]["user"]["login"]
+    action = "PULL_REQUEST"
+    from_branch = _json["pull_request"]["head"]["ref"]
+    to_branch = _json["pull_request"]["base"]["ref"]
+    timestamp = _json["pull_request"]["created_at"]
+    timestamp = parser.parse(timestamp)
+
+    # print(request_id, author, action, from_branch, to_branch, timestamp)
+
+    id = mongo.db.requests.insert(
+        {
+            "request_id": request_id,
+            "author": author,
+            "action": action,
+            "from_branch": from_branch,
+            "to_branch": to_branch,
+            "timestamp": timestamp,
+        }
+    )
+
+    return {"success": True, "message": "pull request inserted"}, 200
 
 
 @webhook.route("/display", methods=["GET"])
 def display():
-    # show html template
-    return render_template('index.html')
+    return render_template("index.html")
 
 
 @webhook.route("/fetch", methods=["GET"])
