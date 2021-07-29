@@ -1,6 +1,6 @@
 # Deep Bhatt
 
-# Backend Task - @TechStax
+# Task - @TechStax
 
 
 ## 💻 How to run
@@ -49,4 +49,4 @@ POST http://127.0.0.1:5000/webhook/display
 ```
 
 ## 🖼️ Example screenshot of the super minimalistic UI
-// ss here
+![UI_SS](https://i.imgur.com/7PbJMXb.png)
