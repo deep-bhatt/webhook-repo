@@ -10,7 +10,7 @@ webhook = Blueprint("Webhook", __name__, url_prefix="/webhook")
 @webhook.route("/receiver/push", methods=["POST"])
 def receiver_push():
     _json = request.json
-    request_id = _json['after']
+    request_id = _json["after"]
     author = _json["pusher"]["name"]
     action = "PUSH"
     from_branch = _json["ref"].split("/")[-1]
@@ -20,14 +20,16 @@ def receiver_push():
 
     # print(request_id, author, action, from_branch, to_branch, timestamp)
 
-    id = mongo.db.requests.insert({
-        'request_id': request_id,
-        'author': author,
-        'action': action,
-        'from_branch': from_branch,
-        'to_branch': to_branch,
-        'timestamp': timestamp
-    })
+    id = mongo.db.requests.insert(
+        {
+            "request_id": request_id,
+            "author": author,
+            "action": action,
+            "from_branch": from_branch,
+            "to_branch": to_branch,
+            "timestamp": timestamp,
+        }
+    )
 
     return {"success": True, "message": "push request inserted"}, 200
 
