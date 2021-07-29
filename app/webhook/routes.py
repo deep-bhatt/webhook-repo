@@ -21,22 +21,23 @@ def receiver_merge():
         request_id = _json["after"]
         author = _json["pusher"]["name"]
         action = "PUSH"
-        from_branch = _json["ref"].split("/")[-1]
-        to_branch = _json["ref"].split("/")[-1]
+        from_branch = to_branch = _json["ref"].split("/")[-1]
         timestamp = _json["head_commit"]["timestamp"]
         timestamp = parser.parse(timestamp)
     elif "pull_request" in _json:
+        pull_request = _json["pull_request"]
+
         if _json["action"] == "opened":
             action = "PULL_REQUEST"
-            timestamp = _json["pull_request"]["created_at"]
+            timestamp = pull_request["created_at"]
         elif _json["action"] == "closed":
             action = "MERGE"
-            timestamp = _json["pull_request"]["merged_at"]
+            timestamp = pull_request["merged_at"]
 
-        request_id = _json["pull_request"]["id"]
-        author = _json["pull_request"]["user"]["login"]
-        from_branch = _json["pull_request"]["head"]["ref"]
-        to_branch = _json["pull_request"]["base"]["ref"]
+        request_id = pull_request["id"]
+        author = pull_request["user"]["login"]
+        from_branch = pull_request["head"]["ref"]
+        to_branch = pull_request["base"]["ref"]
         timestamp = parser.parse(timestamp)
     else:
         return "Not Yet Implemented", 404
