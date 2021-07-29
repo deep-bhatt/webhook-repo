@@ -73,6 +73,8 @@ def fetch():
     # in json
     results = list(mongo.db.requests.find({}, {"_id": 0}))
     for r in results:
-        r["timestamp"] = r["timestamp"].strftime("%m/%d/%Y, %H:%M:%S %p %Z")
+        time_label = r["timestamp"].strftime("%d %B %Y - %I:%M %p")
+        time_label += " " + "UTC"
+        r["time_label"] = time_label
         print(r)
     return json.dumps(results)
