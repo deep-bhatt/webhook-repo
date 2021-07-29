@@ -28,14 +28,15 @@ def receiver_merge():
     elif "pull_request" in _json:
         if _json["action"] == "opened":
             action = "PULL_REQUEST"
+            timestamp = _json["pull_request"]["created_at"]
         elif _json["action"] == "closed":
             action = "MERGE"
+            timestamp = _json["pull_request"]["merged_at"]
 
         request_id = _json["pull_request"]["id"]
         author = _json["pull_request"]["user"]["login"]
         from_branch = _json["pull_request"]["head"]["ref"]
         to_branch = _json["pull_request"]["base"]["ref"]
-        timestamp = _json["pull_request"]["created_at"]
         timestamp = parser.parse(timestamp)
     else:
         return "Not Yet Implemented", 404
@@ -61,6 +62,8 @@ def fetch():
     results = list(mongo.db.requests.find({}, {"_id": 0}))
     for r in results:
         time_label = r["timestamp"].strftime("%d %B %Y - %I:%M %p")
+
+        # time is stored as UTC in MongoDB
         time_label += " " + "UTC"
         r["time_label"] = time_label
         print(r)

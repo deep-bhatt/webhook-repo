@@ -5,9 +5,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Git Status</title>
+  <style>
+    li {
+      padding: 2px;
+    }
+  </style>
 </head>
 <body>
-  A really simple list :)
+  <h2>Git Status</h2>
   <ul id="gitRequestlist">
   </ul>
 </body>
@@ -38,11 +43,9 @@ function fetchRequests() {
         ul.appendChild(li);
       });
     })
-}
-
+  }
 
   window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
     fetchRequests();
     setInterval(() => {
       document.getElementById('gitRequestlist').innerHTML = ''
