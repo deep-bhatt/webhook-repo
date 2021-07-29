@@ -1,34 +1,27 @@
-Learn about Flask Blueprint
-see how to set up CORS
-set up altas mongodb
-write core functions that'd populate db
-setup a UI that'd fetch from db
-setup heroku
+# Deep Bhatt
 
-# Dev Assessment - Webhook Receiver
+# Backend Task - @TechStax
 
-Please use this repository for constructing the Flask webhook receiver.
 
-*******************
+## 💻 How to run
+<sup>*Python  v3.8.10*</sup>
 
-## Setup
-
-* Create a new virtual environment
+* Create a pyenv envirnoment
 
 ```bash
-pip install virtualenv
+pyenv virtualenv 3.8.10 webhook-repo # version hopefully verions 3.6+ should also work!
 ```
 
-* Create the virtual env
+* `cd` into the webhook-repo
 
 ```bash
-virtualenv venv
+cd ./webhook-repo
 ```
 
 * Activate the virtual env
 
 ```bash
-source venv/bin/activate
+pyenv local webhook-repo
 ```
 
 * Install requirements
@@ -37,18 +30,23 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-* Run the flask application (In production, please use Gunicorn)
+* Run the flask application
 
 ```bash
 python run.py
 ```
 
-* The endpoint is at:
+* The endpoint for webhook receiver is at:
 
 ```bash
 POST http://127.0.0.1:5000/webhook/receiver
 ```
 
-You need to use this as the base and setup the flask app. Integrate this with MongoDB (commented at `app/extensions.py`)
+* The endpoint for UI is at:
 
-*******************
+```bash
+POST http://127.0.0.1:5000/webhook/display
+```
+
+## 🖼️ Example screenshot of the super minimalistic UI
+// ss here

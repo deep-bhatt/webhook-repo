@@ -37,7 +37,7 @@ function fetchRequests() {
           // "Travis" merged branch "dev" to "master" on 2nd April 2021 - 12:00 PM UTC
           message = `"${gitRequest.author}" merged branch "${gitRequest.from_branch}" to "${gitRequest.to_branch}" on ${gitRequest.time_label}`;
         } else {
-          alert(`Action ${gitRequest.action} Not Yet Implemented`)
+          alert(`Action ${gitRequest.action} Not Yet Implemented`);
         }
         li.appendChild(document.createTextNode(message));
         ul.appendChild(li);
@@ -48,7 +48,7 @@ function fetchRequests() {
   window.addEventListener('DOMContentLoaded', (event) => {
     fetchRequests();
     setInterval(() => {
-      document.getElementById('gitRequestlist').innerHTML = ''
+      document.getElementById('gitRequestlist').innerHTML = '';
       fetchRequests();
     }, 15000);
   });
