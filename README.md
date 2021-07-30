@@ -45,7 +45,7 @@ POST http://127.0.0.1:5000/webhook/receiver
 * The endpoint for UI is at:
 
 ```bash
-POST http://127.0.0.1:5000/webhook/display
+GET http://127.0.0.1:5000/webhook/display
 ```
 
 ## 🖼️ Example screenshot of the super minimalistic UI
